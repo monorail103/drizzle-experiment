@@ -1,0 +1,41 @@
+services:
+  postgres:
+    build: . # Dockerfileを参照
+    container_name: pg17
+    restart: no
+    environment:
+      POSTGRES_USER: "student"
+      POSTGRES_PASSWORD: "secret123"
+      POSTGRES_DB: "playground"
+      TZ: Asia/Tokyo
+      LANG: ja_JP.UTF-8
+      LANGUAGE: ja_JP:ja
+      LC_MESSAGES: ja_JP.UTF-8
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg17_data:/var/lib/postgresql/data
+
+  dbgate:
+    image: dbgate/dbgate:6.6.3
+    container_name: dbgate
+    restart: no
+    depends_on:
+      postgres:
+        condition: service_started
+    ports:
+      - "8080:3000"
+    volumes:
+      - dbgate_data:/root/.dbgate
+    environment:
+      CONNECTIONS: "pg17_local"
+      ENGINE_pg17_local: "postgres@dbgate-plugin-postgres"
+      SERVER_pg17_local: "postgres"
+      PORT_pg17_local: "5432"
+      USER_pg17_local: "student"
+      PASSWORD_pg17_local: "secret123"
+      DATABASE_pg17_local: "playground"
+
+volumes:
+  pg17_data:
+  dbgate_data:
