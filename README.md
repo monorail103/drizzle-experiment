@@ -1,6 +1,7 @@
 # drizzle-Experiment
-
-
+詳細については
+https://note.com/legal_willet1795/n/n27e46240f894
+を参照してください。
 
 ## 8. 演習問題の解答と解説
 
